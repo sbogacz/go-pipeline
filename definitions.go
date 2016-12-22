@@ -8,11 +8,12 @@ type Runner interface {
 	Run(chan interface{}) chan interface{}
 }
 
-// Operator simply defines a type to simplify the following definition
+// Operator aliases a function that takes one input channel and one output channel
 type Operator func(chan interface{}, chan interface{})
 
 // Run takes an input channel, and a series of operators, and uses the output
-// of each successive operator as the input for the next
+// of each successive operator as the input for the next. This makes the Operator
+// implement the Runner interface
 func (o Operator) Run(in chan interface{}) chan interface{} {
 	out := make(chan interface{})
 	go func() {
@@ -22,7 +23,7 @@ func (o Operator) Run(in chan interface{}) chan interface{} {
 	return out
 }
 
-// Flow is a series of Operators that can be applied in sequence
+// Flow is a slice of Operators that can be applied in sequence
 type Flow []Operator
 
 // NewFlow is syntactic sugar to create a Flow
@@ -30,7 +31,8 @@ func NewFlow(ops ...Operator) Flow {
 	return Flow(ops)
 }
 
-// Run takes an input channel and runs the operator
+// Run takes an input channel and runs the operators in the slice in order.
+// This makes Flow implement the Runner interface
 func (f Flow) Run(in chan interface{}) chan interface{} {
 	for _, m := range f {
 		in = m.Run(in)
