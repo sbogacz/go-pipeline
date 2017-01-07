@@ -1,5 +1,7 @@
 # go-pipeline
 
+[![Build Status](https://travis-ci.org/sbogacz/go-pipeline.svg?branch=master)](https://travis-ci.org/sbogacz/go-pipeline) [![Coverage Status](https://coveralls.io/repos/github/sbogacz/go-pipeline/badge.svg?branch=master)](https://coveralls.io/github/sbogacz/go-pipeline?branch=master)
+
 go-pipeline is a Go library to provide some channel "middleware"-like functionality.
 It can lead to some clean code when processing various inputs that share a flow.
 
@@ -43,4 +45,4 @@ More examples of how to use the pipeline package can be found in the test files
 
 If you'd like to contribute to this project, make sure that you're running [go vet](https://golang.org/cmd/vet/)
 and [go lint](https://github.com/golang/lint) before submitting a pull request. If
-adding a feature or fixing a bug, please also add a test case verify the new functionality/new fix. 
+adding a feature or fixing a bug, please also add a test case verify the new functionality/new fix.
