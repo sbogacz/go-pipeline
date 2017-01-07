@@ -14,12 +14,12 @@ func ExampleRateLimiter() {
 	// create new rate limiter allowing 10 ops/sec
 	limiter := rate.NewLimiter(10, 1)
 
-	in := make(chan interface{}, 20)
+	in := make(chan interface{}, 21)
 
 	// create a RateLimiter operator and run it on input channel
 	out := pipeline.RateLimiter(limiter).Run(in)
 	startTime := time.Now()
-	for i := 0; i < 100; i++ {
+	for i := 0; i < 21; i++ {
 		in <- i
 	}
 	close(in)
@@ -27,7 +27,8 @@ func ExampleRateLimiter() {
 	for _ = range out {
 	} // this is just to flush the output channel
 	// should have taken about 2 seconds
-	fmt.Printf("After rate limiting, this took %s", startTime.Sub(time.Now()).String())
+	fmt.Printf("After rate limiting, this took %d", int(time.Now().Sub(startTime).Seconds()))
+	// Output: After rate limiting, this took 2
 }
 
 func ExampleFlow() {
@@ -100,6 +101,7 @@ func ExampleFlow() {
 	// 1 + 3 + 5 + 7 + 9 = 25... * 2 = 50
 	// 2 + 4 + 6 + 8 = 20 * 3 = 60
 	fmt.Printf("The total is %d\n", total) // Should total 110
+	// Output: The total is 110
 }
 
 func ExampleFlow_wordCount() {
