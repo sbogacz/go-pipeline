@@ -2,6 +2,7 @@ package pipeline_test
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
 	pipeline "github.com/sbogacz/go-pipeline"
@@ -99,4 +100,51 @@ func ExampleFlow() {
 	// 1 + 3 + 5 + 7 + 9 = 25... * 2 = 50
 	// 2 + 4 + 6 + 8 = 20 * 3 = 60
 	fmt.Printf("The total is %d\n", total) // Should total 110
+}
+
+func ExampleFlow_wordCount() {
+	// Create a new intermediary type to operate on.
+	// A tuple of the word and the number of times it occurred.
+	type tuple struct {
+		token string
+		count int
+	}
+
+	// wordCount is an operator that takes in strings (words) and emits a tuple
+	// of (word, 1)
+	wordCount := pipeline.Operator(func(in chan interface{}, out chan interface{}) {
+		for word := range in {
+			out <- tuple{word.(string), 1}
+		}
+	})
+
+	// countAggregator takes in tuples and aggregates their counts. Outputs
+	// the word and count output as a string.
+	countAggregator := pipeline.Operator(func(in chan interface{}, out chan interface{}) {
+		counts := make(map[string]int)
+		for t := range in {
+			counts[t.(tuple).token] += t.(tuple).count
+		}
+		for word, count := range counts {
+			out <- fmt.Sprintf("%s appears %d times", word, count)
+		}
+	})
+
+	// Launch the word count Flow
+	input := make(chan interface{})
+	wordCountFlow := pipeline.NewFlow(wordCount, countAggregator)
+	output := wordCountFlow.Run(input)
+
+	// Feed in the input document
+	document := "the quick fox jumps over the lazy brown dog fox fox"
+	for _, word := range strings.Split(document, " ") {
+		input <- word
+	}
+	// Signal that we are done submitting input
+	close(input)
+
+	// Read the output
+	for result := range output {
+		fmt.Println(result)
+	}
 }
