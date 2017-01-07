@@ -3,9 +3,13 @@ language: go
 go:
   - tip
 
+env:
+  - "PATH=/home/travis/gopath/bin:$PATH"
+
 before_script:
   - go get golang.org/x/tools/cmd/cover
   - go get github.com/mattn/goveralls
 
-after_script:
-  - go test -v -covermode=count -coverprofile=coverage.out $HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=travis-ci -repotoken l1ifBtMVF3LZMUa37oW2NsVra6iiBs4Ef
+script:
+  - go test -v -covermode=count -coverprofile=coverage.out ./...
+  - goveralls -coverprofile=coverage.out -service travis-ci -repotoken $COVERALLS_TOKEN
