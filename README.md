@@ -34,3 +34,13 @@ func multiplier(x int) Operator {
 This package also provides a `RateLimiter` function which takes a rate limiter
 from the "golang.org/x/time/rate" package, and returns an `Operator` which returns
 a channel whose input is throttled by the provided rate limiter.
+
+## Examples
+
+More examples of how to use the pipeline package can be found in the test files
+
+## Contributing
+
+If you'd like to contribute to this project, make sure that you're running [go vet](https://golang.org/cmd/vet/)
+and [go lint](https://github.com/golang/lint) before submitting a pull request. If
+adding a feature or fixing a bug, please also add a test case verify the new functionality/new fix. 
