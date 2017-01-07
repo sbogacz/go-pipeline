@@ -10,7 +10,7 @@ func TestPipeline(t *testing.T) {
 	Convey("Make sure combining and applying operators works as expected", t, func() {
 		input0 := make(chan interface{})
 		input1 := make(chan interface{})
-		// for every odd, mulitply times two, and add the results
+		// for every odd, multiply times two, and add the results
 		oddFlow := NewFlow(ifOdd, multiplier(2), summer)
 		out0 := oddFlow.Run(input0)
 

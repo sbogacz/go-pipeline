@@ -24,7 +24,7 @@ func ExampleRateLimiter() {
 	}
 	close(in)
 
-	for _ = range out {
+	for range out {
 	} // this is just to flush the output channel
 	// should have taken about 2 seconds
 	fmt.Printf("After rate limiting, this took %d", int(time.Now().Sub(startTime).Seconds()))
@@ -77,7 +77,7 @@ func ExampleFlow() {
 		out <- total
 	})
 
-	// for every odd, mulitply times two, and add the results
+	// for every odd, multiply times two, and add the results
 	oddFlow := pipeline.NewFlow(ifOdd, multiplier(2), summer)
 	out0 := oddFlow.Run(input0)
 

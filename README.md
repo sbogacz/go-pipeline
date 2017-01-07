@@ -1,6 +1,6 @@
 # go-pipeline
 
-[![Build Status](https://travis-ci.org/sbogacz/go-pipeline.svg?branch=master)](https://travis-ci.org/sbogacz/go-pipeline) [![Coverage Status](https://coveralls.io/repos/github/sbogacz/go-pipeline/badge.svg?branch=master)](https://coveralls.io/github/sbogacz/go-pipeline?branch=master)
+[![Build Status](https://travis-ci.org/sbogacz/go-pipeline.svg?branch=master)](https://travis-ci.org/sbogacz/go-pipeline) [![Coverage Status](https://coveralls.io/repos/github/sbogacz/go-pipeline/badge.svg?branch=master)](https://coveralls.io/github/sbogacz/go-pipeline?branch=master) [![Go Report Card](https://goreportcard.com/badge/github.com/sbogacz/go-pipeline)](https://goreportcard.com/report/github.com/sbogacz/go-pipeline)
 
 go-pipeline is a Go library to provide some channel "middleware"-like functionality.
 It can lead to some clean code when processing various inputs that share a flow.
