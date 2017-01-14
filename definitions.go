@@ -5,16 +5,16 @@ import "sync"
 // Runner interface exposes functions that take in a chan interface{}
 // and outputs to a chan interface{}
 type Runner interface {
-	Run(chan interface{}) chan interface{}
+	Run(<-chan interface{}) chan interface{}
 }
 
 // Operator aliases a function that takes one input channel and one output channel
-type Operator func(chan interface{}, chan interface{})
+type Operator func(<-chan interface{}, chan interface{})
 
 // Run takes an input channel, and a series of operators, and uses the output
 // of each successive operator as the input for the next. This makes the Operator
 // implement the Runner interface
-func (o Operator) Run(in chan interface{}) chan interface{} {
+func (o Operator) Run(in <-chan interface{}) chan interface{} {
 	out := make(chan interface{})
 	go func() {
 		o(in, out)

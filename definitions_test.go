@@ -60,7 +60,7 @@ func TestPipeline(t *testing.T) {
 }
 
 func multiplier(x int) Operator {
-	return Operator(func(in chan interface{}, out chan interface{}) {
+	return Operator(func(in <-chan interface{}, out chan interface{}) {
 		for m := range in {
 			n := m.(int)
 			out <- (int(n) * x)
@@ -68,7 +68,7 @@ func multiplier(x int) Operator {
 	})
 }
 
-var ifOdd = Operator(func(in chan interface{}, out chan interface{}) {
+var ifOdd = Operator(func(in <-chan interface{}, out chan interface{}) {
 	for m := range in {
 		n := m.(int)
 		if n%2 == 1 {
@@ -77,7 +77,7 @@ var ifOdd = Operator(func(in chan interface{}, out chan interface{}) {
 	}
 })
 
-var ifEven = Operator(func(in chan interface{}, out chan interface{}) {
+var ifEven = Operator(func(in <-chan interface{}, out chan interface{}) {
 	for m := range in {
 		n := m.(int)
 		if n%2 == 0 {
@@ -86,7 +86,7 @@ var ifEven = Operator(func(in chan interface{}, out chan interface{}) {
 	}
 })
 
-var summer = Operator(func(in chan interface{}, out chan interface{}) {
+var summer = Operator(func(in <-chan interface{}, out chan interface{}) {
 	total := 0
 	for m := range in {
 		n := m.(int)

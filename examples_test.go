@@ -38,7 +38,7 @@ func ExampleFlow() {
 	// multiplier takes an int and returns an Operator which multiplies the
 	// input by the given int
 	multiplier := func(x int) pipeline.Operator {
-		return pipeline.Operator(func(in chan interface{}, out chan interface{}) {
+		return pipeline.Operator(func(in <-chan interface{}, out chan interface{}) {
 			for m := range in {
 				n := m.(int)
 				out <- (int(n) * x)
@@ -47,7 +47,7 @@ func ExampleFlow() {
 	}
 
 	// ifEven is an operator which filters out odds and passes evens through
-	ifEven := pipeline.Operator(func(in chan interface{}, out chan interface{}) {
+	ifEven := pipeline.Operator(func(in <-chan interface{}, out chan interface{}) {
 		for m := range in {
 			n := m.(int)
 			if n%2 == 0 {
@@ -57,7 +57,7 @@ func ExampleFlow() {
 	})
 
 	// ifOdd is an operator which filters out evens and passes odds through
-	ifOdd := pipeline.Operator(func(in chan interface{}, out chan interface{}) {
+	ifOdd := pipeline.Operator(func(in <-chan interface{}, out chan interface{}) {
 		for m := range in {
 			n := m.(int)
 			if n%2 == 1 {
@@ -68,7 +68,7 @@ func ExampleFlow() {
 
 	// summer is an operator which aggregates input integers, and outputs the
 	// total once the input channel closes
-	summer := pipeline.Operator(func(in chan interface{}, out chan interface{}) {
+	summer := pipeline.Operator(func(in <-chan interface{}, out chan interface{}) {
 		total := 0
 		for m := range in {
 			n := m.(int)
@@ -114,7 +114,7 @@ func ExampleFlow_wordCount() {
 
 	// wordCount is an operator that takes in strings (words) and emits a tuple
 	// of (word, 1)
-	wordCount := pipeline.Operator(func(in chan interface{}, out chan interface{}) {
+	wordCount := pipeline.Operator(func(in <-chan interface{}, out chan interface{}) {
 		for word := range in {
 			out <- tuple{word.(string), 1}
 		}
@@ -122,7 +122,7 @@ func ExampleFlow_wordCount() {
 
 	// countAggregator takes in tuples and aggregates their counts. Outputs
 	// the word and count output as a string.
-	countAggregator := pipeline.Operator(func(in chan interface{}, out chan interface{}) {
+	countAggregator := pipeline.Operator(func(in <-chan interface{}, out chan interface{}) {
 		counts := make(map[string]int)
 		for t := range in {
 			counts[t.(tuple).token] += t.(tuple).count
